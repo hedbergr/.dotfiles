@@ -3,21 +3,47 @@
 REQUIRED_PKG="stow"
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 CONFIG_DIR="${SCRIPT_DIR}/*"
+USER_INPUT=$1
 
-if ! dpkg -l $REQUIRED_PKG > /dev/null; then
-    echo -e "Command stow not found. Install? (y/n) \c"
-    sudo apt --yes install $REQUIRED_PKG
-fi
-
-echo "Stowing .dotfiles..."
-
-for file in ${CONFIG_DIR}; do
-    if [ -d ${file} ]; then
-        stow $(basename $file) &> /dev/null
-	#TODO: Remove old dotfile and create new if we fail
-	if [ $? -ne 0 ]; then
-	    echo "Failed to create symbolic link for $(basename $file)"
-	fi
-        echo "$(basename $file)"
+install_stow() {
+    if ! dpkg -l $REQUIRED_PKG > /dev/null; then
+        echo -e "Command stow not found. Install? (y/n) \c"
+        sudo apt --yes install $REQUIRED_PKG
     fi
-done
+}
+
+stowing() {
+    #TODO: Remove old dotfile and create new if we fail
+    stow $1 &> /dev/null
+    if [ $? -ne 0 ]; then
+        echo "Failed to create symbolic link for $1"
+    fi
+    echo "Stowed: $1"
+}
+
+create_links() {
+    if [ ${USER_INPUT} ]; then
+        SEARCH=$( find $CONFIG_DIR -type d -name $USER_INPUT )
+        if [ $SEARCH ]; then
+            stowing ${SEARCH##*/}
+        else
+            echo "No such directory exists. Aborting."
+            exit
+        fi
+    else
+        for file in ${CONFIG_DIR}; do
+            if [ -d ${file} ]; then
+                stowing $(basename $file)
+            fi
+        done
+    fi
+}
+
+main() {
+    echo "Stowing .dotfiles..."
+    install_stow
+    create_links
+
+}
+
+main
