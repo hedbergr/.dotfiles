@@ -44,13 +44,15 @@ set autoindent
 " Always display the status line, even if only one window is displayed
 set laststatus=2
 
+" Format the status line
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+
 " Instead of failing a command because of unsaved changes, instead raise a
 " dialogue asking if you wish to save changed files.
 set confirm
 
 " Display line numbers on the left.
 set number
-
 
 "------------------------------------------------------------------------------
 " Indentation options {{{1
@@ -68,3 +70,12 @@ set expandtab
 " next seach
 nnoremap <C-L> :nohl<CR><C-L>
 
+"------------------------------------------------------------------------------
+" Helper functions {{{1
+
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    endif
+    return ''
+endfunction
