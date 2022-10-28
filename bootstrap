@@ -1,0 +1,21 @@
+#!/usr/bin/bash
+
+REQUIRED_PKG="stow"
+
+if ! dpkg -l $REQUIRED_PKG > /dev/null; then
+    echo -e "Command stow not found. Install? (y/n) \c"
+    sudo apt --yes install $REQUIRED_PKG
+fi
+
+echo "Stowing .dotfiles..."
+
+for file in ~/.dotfiles/*; do
+    if [ -d ${file} ]; then
+        stow $(basename $file) &> /dev/null
+	#TODO: Remove old dotfile and create new if we fail
+	if [ $? -ne 0 ]; then
+	    echo "Failed to create symbolic link for $(basename $file)"
+	fi
+        echo "$(basename $file)"
+    fi
+done
