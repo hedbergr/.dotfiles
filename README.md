@@ -7,3 +7,8 @@
   cd ~/.dotfiles
   stow vim
   ```
+* Look at home directory to show symbolic link
+  ``` bash
+  $ ls -la ~ | grep vimrc
+  .vimrc -> .dotfiles/vim/.vimrc
+  ```
