@@ -44,3 +44,4 @@ ones explicitly by path.
 | `.vimrc` | vim |
 | `.tmux.conf` | tmux — `C-a` prefix, 1-indexed windows, `\` / `-` splits |
 | `.emacs.d/` | emacs |
+| `.claude/CLAUDE.md` | Claude Code — global instructions |
