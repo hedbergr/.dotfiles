@@ -18,6 +18,21 @@ conflicting files aside and re-run — the error lists them.
 Use SSH (`git@github.com:hedbergr/.dotfiles.git`) instead of HTTPS if you want
 to push from that machine.
 
+### Windows
+
+The steps above work in Git Bash (`~` is `C:\Users\<you>`). Two additions:
+
+- Run `dotfiles config core.autocrlf false` before `dotfiles checkout`, so files
+  keep LF endings and diff cleanly against the Linux hosts.
+- For PowerShell, add a function to `$PROFILE` instead of the alias:
+
+  ```powershell
+  function dotfiles { git --git-dir="$HOME\.dotfiles.git" --work-tree="$HOME" @args }
+  ```
+
+  Windows PowerShell ships with execution policy `Restricted`, which blocks
+  profiles. Allow them with `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`.
+
 ## Daily use
 
 Same as git, with `dotfiles` in place of `git`:
