@@ -60,3 +60,4 @@ ones explicitly by path.
 | `.tmux.conf` | tmux — `C-a` prefix, 1-indexed windows, `\` / `-` splits |
 | `.emacs.d/` | emacs |
 | `.claude/CLAUDE.md` | Claude Code — global instructions |
+| `.claude/agents/` | Claude Code — global subagents (`supply-chain-auditor`, `architecture-reviewer`) |
