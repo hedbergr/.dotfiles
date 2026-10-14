@@ -39,3 +39,9 @@ everything working in it, so isolate work in worktrees.
   PRs are squash-merged, so `git branch -d` won't recognise them as merged. Before `git branch -D`,
   confirm `gh pr view <branch> --json state,headRefOid` shows MERGED and a `headRefOid` equal to
   `git rev-parse <branch>` (no unpushed commits). Remote branches are auto-deleted on merge.
+
+# Dotfiles
+
+- This file, `~/.tmux.conf`, `~/.vimrc` and `~/.emacs.d/` are version-controlled in a **bare git repo** at `~/.dotfiles.git` with `$HOME` as work tree (remote `hedbergr/.dotfiles`). There is no `.git` dir or symlink, so a plain `git` check won't find it.
+- Use `git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME <cmd>` from `~` (the `dotfiles` alias isn't available in non-interactive shells). See `~/README.md`.
+- `main` requires a PR. Never check out another branch (the work tree is all of `$HOME`): commit on local `main`, push with `push origin HEAD:refs/heads/<branch>`, then `gh pr create --repo hedbergr/.dotfiles --head <branch>`. After the squash-merge, `fetch` and `reset --keep origin/main`.
